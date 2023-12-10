@@ -6,9 +6,11 @@ import domian.EmployeeTimeRecord;
 public class PayRoll {
 
     final private TimeRecordRepository timeRecordRepository;
+    final private EmployeeRepository employeeRepository;
 
-    PayRoll(TimeRecordRepository timeRecord) {
+    PayRoll(TimeRecordRepository timeRecord, EmployeeRepository employeeRepository) {
         this.timeRecordRepository = timeRecord;
+        this.employeeRepository = employeeRepository;
     }
 
     record PayRollInput(int employeeId, int month, int year) {
