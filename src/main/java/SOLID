@@ -1,0 +1,12 @@
+SOLID
+
+Single Responsibility
+Open/Closed
+Liskov Substitution
+Interface Segregation
+Dependency Inversion
+
+* Design OO (Alta coesao e baixo Acoplamento);
+* Reduzir a fragilidade
+* Reduzir a regider
+* Aumento de reuso
