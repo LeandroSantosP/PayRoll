@@ -1,10 +1,12 @@
 package application;
+import domian.Employee;
 
-
-import domian.EmployeeTimeRecord;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class PayRoll {
-
     final private TimeRecordRepository timeRecordRepository;
     final private EmployeeRepository employeeRepository;
 
@@ -13,25 +15,20 @@ public class PayRoll {
         this.employeeRepository = employeeRepository;
     }
 
-    record PayRollInput(int employeeId, int month, int year) {
+    record PayRollInput(UUID employeeId, int month, int year) {
     }
 
     record PayRollOutput(String name, double salary) {
     }
 
-    PayRollOutput execute(PayRollInput input) {
-
+    PayRollOutput execute(PayRollInput input) throws ExecutionException, InterruptedException {
+        CompletableFuture<Employee> employee = this.employeeRepository.getEmployeeById(input.employeeId);
         var records = this.timeRecordRepository.getTimeRecordByEmployeeId(input.employeeId);
-        int hours = 0;
-        for(EmployeeTimeRecord employeeTimeRecord : records) {
-           hours += (int) (employeeTimeRecord.checkOutDate().getTime() - employeeTimeRecord.checkingDate().getTime()) /(1000*60*60);
-        }
+        var EmployeeData = employee.get();
 
-        double salaryPerHourly = 30;
+        double salaryTotal = EmployeeData.getSalary(EmployeeData, records);
 
-        double salaryTotal = hours * salaryPerHourly;
-
-        return new PayRollOutput("Matheus Silva", salaryTotal);
+        return new PayRollOutput(EmployeeData.getName(), salaryTotal);
     }
 
 }

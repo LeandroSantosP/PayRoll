@@ -1,8 +1,6 @@
 package infra;
-
 import application.EmployeeRepository;
 import domian.Employee;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +8,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class EmployeeRepositoryMemory implements EmployeeRepository {
     private final Map<UUID, Employee> employees = new HashMap<UUID, Employee>();
-
 
     @Override
     public CompletableFuture<Employee> getEmployeeById(UUID id) {
@@ -25,7 +22,7 @@ public class EmployeeRepositoryMemory implements EmployeeRepository {
 
     @Override
     public void persist(Employee employee) {
-        var future = CompletableFuture.runAsync(() -> {
+        CompletableFuture.runAsync(() -> {
             this.employees.put(employee.getId(), employee);
         });
     }
